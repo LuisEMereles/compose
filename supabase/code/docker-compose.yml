@@ -42,10 +42,7 @@ services:
   kong:
     image: kong:2.8.1
     restart: unless-stopped
-    # Si EasyPanel sigue dando problemas con puertos, comente la sección ports
-    ports:
-      - ${KONG_HTTP_PORT}:8000/tcp
-      - ${KONG_HTTPS_PORT}:8443/tcp
+    # ELIMINADO: Ports (Easypanel gestiona esto)
     environment:
       KONG_DATABASE: "off"
       KONG_DECLARATIVE_CONFIG: /home/kong/temp.yml
@@ -209,7 +206,6 @@ services:
       SUPABASE_URL: http://kong:8000
       SUPABASE_ANON_KEY: ${ANON_KEY}
       SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY}
-      # Corrección clave: Usar comillas en URLs complejas
       POSTGRES_BACKEND_URL: "postgresql://supabase_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/_supabase"
       POSTGRES_BACKEND_SCHEMA: _analytics
       LOGFLARE_FEATURE_FLAG_OVERRIDE: multibackend=true
@@ -240,9 +236,7 @@ services:
   supavisor:
     image: supabase/supavisor:2.7.4
     restart: unless-stopped
-    ports:
-      - ${POSTGRES_PORT}:5432
-      - ${POOLER_PROXY_PORT_TRANSACTION}:6543
+    # ELIMINADO: Ports (Easypanel gestiona esto)
     volumes:
       - ./volumes/pooler/pooler.exs:/etc/pooler/pooler.exs:ro,z
     healthcheck:
