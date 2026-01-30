@@ -3,7 +3,7 @@
 # Date: 2026-01-30
 # Repository: easypanel-io/compose
 # WARNING: Analytics and Vector services have been removed
-#          Log viewing in Studio Dashboard will not work
+#           Log viewing in Studio Dashboard will not work
 
 name: supabase
 services:
@@ -94,6 +94,11 @@ services:
       GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: ${MAILER_URLPATHS_EMAIL_CHANGE}
       GOTRUE_EXTERNAL_PHONE_ENABLED: ${ENABLE_PHONE_SIGNUP}
       GOTRUE_SMS_AUTOCONFIRM: ${ENABLE_PHONE_AUTOCONFIRM}
+      # --- GOOGLE OAUTH AGREGADO ---
+      GOTRUE_EXTERNAL_GOOGLE_ENABLED: ${GOTRUE_EXTERNAL_GOOGLE_ENABLED}
+      GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID: ${GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID}
+      GOTRUE_EXTERNAL_GOOGLE_SECRET: ${GOTRUE_EXTERNAL_GOOGLE_SECRET}
+      GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI: ${GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI}
   rest:
     image: postgrest/postgrest:v12.2.12
     restart: unless-stopped
