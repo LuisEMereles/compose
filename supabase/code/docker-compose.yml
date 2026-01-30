@@ -42,7 +42,6 @@ services:
   kong:
     image: kong:2.8.1
     restart: unless-stopped
-    # ELIMINADO: Ports (Easypanel gestiona esto)
     environment:
       KONG_DATABASE: "off"
       KONG_DECLARATIVE_CONFIG: /home/kong/temp.yml
@@ -91,6 +90,8 @@ services:
       GOTRUE_MAILER_EXTERNAL_HOSTS: ${GOTRUE_MAILER_EXTERNAL_HOSTS}
       GOTRUE_EXTERNAL_PHONE_ENABLED: ${ENABLE_PHONE_SIGNUP}
       GOTRUE_SMS_AUTOCONFIRM: ${ENABLE_PHONE_AUTOCONFIRM}
+      # CORRECCION: Agregada variable faltante que pedia el log
+      API_EXTERNAL_URL: ${API_EXTERNAL_URL}
       # --- GOOGLE OAUTH CONFIGURATION ---
       GOTRUE_EXTERNAL_GOOGLE_ENABLED: ${GOTRUE_EXTERNAL_GOOGLE_ENABLED}
       GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID: ${GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID}
@@ -130,6 +131,8 @@ services:
       FLY_APP_NAME: realtime
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       ERL_AFLAGS: -proto_dist inet_tcp
+      # CORRECCION: Variable necesaria para que no crashee el script de inicio
+      RLIMIT_NOFILE: "10000"
 
   storage:
     image: supabase/storage-api:v1.33.5
@@ -236,7 +239,6 @@ services:
   supavisor:
     image: supabase/supavisor:2.7.4
     restart: unless-stopped
-    # ELIMINADO: Ports (Easypanel gestiona esto)
     volumes:
       - ./volumes/pooler/pooler.exs:/etc/pooler/pooler.exs:ro,z
     healthcheck:
@@ -249,6 +251,8 @@ services:
         condition: service_healthy
     environment:
       POOLER_TENANT_ID: ${POOLER_TENANT_ID}
+      # CORRECCION: Variable necesaria para que supavisor arranque
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
 
 volumes:
   db-config:
